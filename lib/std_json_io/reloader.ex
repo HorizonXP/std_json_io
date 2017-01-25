@@ -2,7 +2,7 @@ defmodule StdJsonIo.Reloader do
   use GenServer
 
   def start_link(mod, files) do
-    GenServer.start_link(__MODULE__, [mod, files], name: {:local, __MODULE__})
+    GenServer.start_link(__MODULE__, [mod, files], name: {:global, __MODULE__})
   end
 
   def init([mod, files]) do
