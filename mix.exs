@@ -40,8 +40,8 @@ defmodule StdJsonIo.Mixfile do
     [
       {:porcelain, "~> 2.0"},
       {:poolboy, "~> 1.5.1"},
-      {:poison, "~> 1.5.0"},
-      {:fs, "~> 0.9.1"},
+      {:poison, "~> 2.2.0"},
+      {:fs, "~> 2.12.0"},
     ]
   end
 
