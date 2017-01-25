@@ -31,20 +31,21 @@ defmodule StdJsonIo do
 
         files = Keyword.get(@options, :watch_files)
 
-        if files && length(files) > 0 do
-          Application.ensure_started(:fs, :permanent)
-
-          reloader_spec = worker(
-            StdJsonIo.Reloader,
-            [__MODULE__, Enum.map(files, &Path.expand/1)],
-            []
-          )
-
-          children = [reloader_spec | children]
-        end
+        children = add_reloader_spec_for_watched_files(children, files)
 
         supervise(children, strategy: :one_for_one, name: __MODULE__)
       end
+
+      defp add_reloader_spec_for_watched_files(spec_list, nil), do: spec_list
+      defp add_reloader_spec_for_watched_files(spec_list, []), do: spec_list
+      defp add_reloader_spec_for_watched_files(spec_list, files) when is_list(files) do
+        Application.ensure_started(:fs, :permanent)
+        reloader_spec = worker(
+          StdJsonIo.Reloader, [__MODULE__, Enum.map(files, &Path.expand/1)], []
+        )
+        [reloader_spec | spec_list]
+      end
+
 
       def restart_io_workers! do
         case Process.whereis(@pool_name) do
