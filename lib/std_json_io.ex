@@ -19,7 +19,7 @@ defmodule StdJsonIo do
 
       def init(:ok) do
         pool_options = [
-          name: @pool_name,
+          name: {:local, @pool_name},
           worker_module: StdJsonIo.Worker,
           size: Keyword.get(@options, :pool_size, 5),
           max_overflow: Keyword.get(@options, :max_overflow, 10)
