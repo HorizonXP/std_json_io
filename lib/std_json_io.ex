@@ -14,12 +14,12 @@ defmodule StdJsonIo do
 
 
       def start_link(opts \\ []) do
-        Supervisor.start_link(__MODULE__, :ok, name: {:global, __MODULE__})
+        Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
       end
 
       def init(:ok) do
         pool_options = [
-          name: {:global, @pool_name},
+          name: @pool_name,
           worker_module: StdJsonIo.Worker,
           size: Keyword.get(@options, :pool_size, 5),
           max_overflow: Keyword.get(@options, :max_overflow, 10)
